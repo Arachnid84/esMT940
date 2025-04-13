@@ -108,6 +108,7 @@ namespace esMT940
                         case ":25:":
                             stmtLine.StmtAccount = transactionData;
                             break;
+                        case ":28:":
                         case ":28C:":
                             stmtLine.StmtSequence = transactionData;
                             break;
@@ -164,8 +165,8 @@ namespace esMT940
                             if ((stmtLine != null) && (transactionLine != null))
                             {
                                 transactionLine.trnDescription = transactionData;
-                                for (int nextLine = lPoint+1; (trnLines[nextLine][0] != ':');nextLine++)
-                                {
+                                for (int nextLine = lPoint + 1; (string.IsNullOrWhiteSpace(trnLines[nextLine]) == false) && (trnLines[nextLine][0] != ':'); nextLine++)
+                                { 
                                     transactionLine.trnDescription = transactionLine.trnDescription + trnLines[nextLine];
                                 }
                             }
