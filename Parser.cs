@@ -12,60 +12,10 @@ namespace esMT940
 {
     public class Parser
     {
-        static CultureInfo CInfo = new CultureInfo("en-US");
-
-        public static DateTime ParseDate(string year, string month, string day, CultureInfo cultureInfo)
-        {
-            if (string.IsNullOrWhiteSpace(year))
-            {
-                throw new ArgumentException("year can not be empty", nameof(year));
-            }
-
-            if (string.IsNullOrWhiteSpace(month))
-            {
-                throw new ArgumentException("month can not be empty", nameof(month));
-            }
-
-            if (string.IsNullOrWhiteSpace(day))
-            {
-                throw new ArgumentException("day can not be empty", nameof(day));
-            }
-
-            if (cultureInfo == null)
-            {
-                throw new ArgumentNullException(nameof(cultureInfo));
-            }
-
-            var parsedFourDigitYear = cultureInfo.Calendar.ToFourDigitYear(ParseInteger(year, cultureInfo));
-            var parsedMonth = ParseInteger(month, cultureInfo);
-            var parsedDay = ParseInteger(day, cultureInfo);
-
-            return new DateTime(parsedFourDigitYear, parsedMonth, parsedDay);
-        }
-
-        public static int ParseInteger(string value, IFormatProvider cultureInfo)
-        {
-            if (TryParseInteger(value, cultureInfo, out int result))
-                return result;
-
-            throw new InvalidCastException();
-        }
-
-        public static bool TryParseInteger(string integer, IFormatProvider cultureInfo, out int result)
-        {
-            return int.TryParse
-                (
-                    integer,
-                    NumberStyles.Any,
-                    cultureInfo,
-                    out result
-                );
-        }
-
         public static async Task<ICollection<Stmt>> ParseAsync(string fileName)
         {
-            string data = null;
-            StreamReader streamReader = null;
+            string data;
+            StreamReader streamReader;
             using (streamReader = new StreamReader(fileName))
             {
                 data = streamReader.ReadToEnd();
@@ -102,15 +52,23 @@ namespace esMT940
                     switch (tag)
                     {
                         case ":20:":
-                            stmtLine = new Stmt();
-                            stmtLine.StmtReference = transactionData;
+                            stmtLine = new Stmt
+                            {
+                                StmtReference = transactionData
+                            };
                             break;
                         case ":25:":
-                            stmtLine.StmtAccount = transactionData;
+                            if (stmtLine != null)
+                            {
+                                stmtLine.StmtAccount = transactionData;
+                            }
                             break;
                         case ":28:":
                         case ":28C:":
-                            stmtLine.StmtSequence = transactionData;
+                            if (stmtLine != null)
+                            {
+                                stmtLine.StmtSequence = transactionData;
+                            }
                             break;
                         case ":60m:":
                         case ":60M:":
@@ -127,8 +85,11 @@ namespace esMT940
                             {
                                 balanceOB = balanceOB + Convert.ToDouble(matchOB.Groups[6].Value);
                             }
-                            stmtLine.StmtOpeningBalance = balanceOB;
-                            stmtLine.StmtCurrency = matchOB.Groups[5].Value;
+                            if (stmtLine != null)
+                            {
+                                stmtLine.StmtOpeningBalance = balanceOB;
+                                stmtLine.StmtCurrency = matchOB.Groups[5].Value;
+                            }
                             break;
                         case ":61:":
                             transactionLine = new Transaction();
@@ -143,38 +104,38 @@ namespace esMT940
                                 throw new InvalidExpressionException(transactionData);
                             }
 
-                            transactionLine.trnValueDate = ParseDate(trnMatch.Groups["year"].Value, trnMatch.Groups["month"].Value, trnMatch.Groups["day"].Value, CInfo);
+                            transactionLine.TrnValueDate = Utility.ParseDate(trnMatch.Groups["year"].Value, trnMatch.Groups["month"].Value, trnMatch.Groups["day"].Value, Utility.CInfo);
                             if (trnMatch.Groups["entrydate"].Length > 0)
                             {
-                                transactionLine.trnEntryDate = ParseDate(trnMatch.Groups["year"].Value, trnMatch.Groups["entrymonth"].Value, trnMatch.Groups["entryday"].Value, CInfo);
+                                transactionLine.TrnEntryDate = Utility.ParseDate(trnMatch.Groups["year"].Value, trnMatch.Groups["entrymonth"].Value, trnMatch.Groups["entryday"].Value, Utility.CInfo);
                             }
                             else
                             {
-                                transactionLine.trnEntryDate = transactionLine.trnValueDate;
+                                transactionLine.TrnEntryDate = transactionLine.TrnValueDate;
                             }
-                            transactionLine.trnDebitCredit = trnMatch.Groups["creditdebit"].Value;
-                            transactionLine.trnFundsCode = trnMatch.Groups["fundscode"].Value;
-                            transactionLine.trnAmmount = Convert.ToDouble(trnMatch.Groups["ammount"].Value);
-                            transactionLine.trnIDCode = trnMatch.Groups["transactiontype"].Value;
-                            transactionLine.trnCustReference = trnMatch.Groups["reference"].Value; ;
-                            transactionLine.trnBankReference = trnMatch.Groups["servicingreference"].Value;
-                            transactionLine.trnSuppDetails = trnMatch.Groups["supplementary"].Value; ;
+                            transactionLine.TrnDebitCredit = trnMatch.Groups["creditdebit"].Value;
+                            transactionLine.TrnFundsCode = trnMatch.Groups["fundscode"].Value;
+                            transactionLine.TrnAmmount = Convert.ToDouble(trnMatch.Groups["ammount"].Value);
+                            transactionLine.TrnTransactionType = trnMatch.Groups["transactiontype"].Value;
+                            transactionLine.TrnCustReference = trnMatch.Groups["reference"].Value; ;
+                            transactionLine.TrnBankReference = trnMatch.Groups["servicingreference"].Value;
+                            transactionLine.TrnSuppDetails = trnMatch.Groups["supplementary"].Value; ;
 
                             break;
                         case ":86:":
                             if ((stmtLine != null) && (transactionLine != null))
                             {
-                                transactionLine.trnDescription = transactionData;
+                                transactionLine.TrnDescription = transactionData;
                                 for (int nextLine = lPoint + 1; (string.IsNullOrWhiteSpace(trnLines[nextLine]) == false) && (trnLines[nextLine][0] != ':'); nextLine++)
                                 { 
-                                    transactionLine.trnDescription = transactionLine.trnDescription + trnLines[nextLine];
+                                    transactionLine.TrnDescription = transactionLine.TrnDescription + trnLines[nextLine];
                                 }
                             }
                             break;
                         case ":62m:":
                         case ":62M:":
                         case ":62F:":
-                            if ((stmt != null && stmtLine != null) && (transactionLine != null))
+                            if (((stmt != null) && (stmtLine != null)) && (transactionLine != null))
                             {
                                 stmtLine.StmtTransactions.Add(transactionLine);
                                 transactionLine = null;
@@ -192,9 +153,12 @@ namespace esMT940
                             {
                                 balance = balance + Convert.ToDouble(match.Groups[6].Value);
                             }
-                            stmtLine.StmtClosingBalance = balance;
+                            if (stmtLine != null)
+                            {
+                                stmtLine.StmtClosingBalance = balance;
+                            }
 
-                            if ((stmtLine != null) && (transactionLine == null))
+                            if ((stmt !=null && stmtLine != null) && (transactionLine == null))
                             {
                                 stmt.Add(stmtLine);
                                 stmtLine = null;
@@ -204,7 +168,12 @@ namespace esMT940
                     }
                 }  
             }
-            return stmt;
+            if (stmt != null)
+            {
+                return stmt;
+            }
+            else
+            { return new List<Stmt>(); }
         }
     }
 }

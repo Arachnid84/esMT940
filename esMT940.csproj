@@ -4,11 +4,12 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-	<IncrementVersionOnBuild>1.0.yyMM.15001+</IncrementVersionOnBuild>
+	<IncrementVersionOnBuild>1.1.yyMM.16001+</IncrementVersionOnBuild>
 	<Company>Extreme Solutions</Company>
-	<Version>1.0.2504.15202</Version>
+	<Version>1.1.2504.16202</Version>
 	<Product>MT940 Parser</Product>
 	<Copyright>Copyright - Extreme Solutions - 2025 - All rights reserved</Copyright>
+	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
 
 </Project>

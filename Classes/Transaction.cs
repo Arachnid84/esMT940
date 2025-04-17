@@ -11,15 +11,15 @@ namespace esMT940.Classes
     [Serializable]
     public partial class Transaction
     {
-        public DateTime trnValueDate {  get; set; }
-        public DateTime? trnEntryDate { get; set; }
-        public string trnDebitCredit { get; set; }
-        public string trnFundsCode { get; set; }
-        public double trnAmmount { get; set; }
-        public string trnIDCode { get; set; }
-        public string trnCustReference { get; set; }
-        public string trnBankReference { get; set; }
-        public string trnSuppDetails { get; set; }
-        public string trnDescription { get; set; }
+        public DateTime TrnValueDate {  get; set; }
+        public DateTime? TrnEntryDate { get; set; }
+        public string TrnDebitCredit { get; set; } = string.Empty;
+        public string TrnFundsCode { get; set; } = string.Empty;
+        public double TrnAmmount { get; set; }
+        public string TrnTransactionType { get; set; } = string.Empty;
+        public string TrnCustReference { get; set; } = string.Empty;
+        public string TrnBankReference { get; set; } = string.Empty;
+        public string TrnSuppDetails { get; set; } = string.Empty;
+        public string TrnDescription { get; set; } = string.Empty;
     }
 }

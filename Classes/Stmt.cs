@@ -9,10 +9,10 @@ namespace esMT940.Classes
     [Serializable]
     public class Stmt
     {
-        public string StmtSequence { get; set; }
-        public string StmtReference { get; set; }
-        public string StmtAccount { get; set; }
-        public string StmtCurrency { get; set; }
+        public string StmtSequence { get; set; } = string.Empty;
+        public string StmtReference { get; set; } = string.Empty;
+        public string StmtAccount { get; set; } = string.Empty;
+        public string StmtCurrency { get; set; } = string.Empty;
         public double StmtOpeningBalance { get; set; }
         public double StmtClosingBalance { get; set; }
         public ICollection<Transaction>? StmtTransactions { get; set; }
