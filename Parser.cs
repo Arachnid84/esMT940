@@ -115,7 +115,7 @@ namespace esMT940
                             }
                             transactionLine.TrnDebitCredit = trnMatch.Groups["creditdebit"].Value;
                             transactionLine.TrnFundsCode = trnMatch.Groups["fundscode"].Value;
-                            transactionLine.TrnAmmount = Convert.ToDouble(trnMatch.Groups["ammount"].Value);
+                            transactionLine.TrnAmount = Convert.ToDouble(trnMatch.Groups["ammount"].Value);
                             transactionLine.TrnTransactionType = trnMatch.Groups["transactiontype"].Value;
                             transactionLine.TrnCustReference = trnMatch.Groups["reference"].Value; ;
                             transactionLine.TrnBankReference = trnMatch.Groups["servicingreference"].Value;
@@ -135,9 +135,9 @@ namespace esMT940
                         case ":62m:":
                         case ":62M:":
                         case ":62F:":
-                            if (((stmt != null) && (stmtLine != null)) && (transactionLine != null))
+                            if ((stmt != null) && (stmtLine != null) && (transactionLine != null))
                             {
-                                stmtLine.StmtTransactions.Add(transactionLine);
+                                stmtLine?.StmtTransactions?.Add(transactionLine);
                                 transactionLine = null;
                             }
 

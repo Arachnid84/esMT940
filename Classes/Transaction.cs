@@ -15,7 +15,7 @@ namespace esMT940.Classes
         public DateTime? TrnEntryDate { get; set; }
         public string TrnDebitCredit { get; set; } = string.Empty;
         public string TrnFundsCode { get; set; } = string.Empty;
-        public double TrnAmmount { get; set; }
+        public double TrnAmount { get; set; }
         public string TrnTransactionType { get; set; } = string.Empty;
         public string TrnCustReference { get; set; } = string.Empty;
         public string TrnBankReference { get; set; } = string.Empty;
