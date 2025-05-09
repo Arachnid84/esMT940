@@ -8,7 +8,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 	<Company>Extreme Solutions</Company>
-	<Version>2505</Version>
+	<Version>1.2.2505</Version>
 	<Product>MT940 Parser</Product>
 	<Copyright>Copyright - Extreme Solutions - 2025 - All rights reserved</Copyright>
 	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
