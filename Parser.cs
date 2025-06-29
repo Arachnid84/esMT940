@@ -29,6 +29,7 @@ namespace esMT940
 
         public static async Task<ICollection<Stmt>> ParseAsync(Stream stream)
         {
+            stream.Seek(0, SeekOrigin.Begin);
             using StreamReader sr = new StreamReader(stream);
             
             List<Stmt> stmt = new List<Stmt>();
@@ -174,6 +175,39 @@ namespace esMT940
             }
             else
             { return new List<Stmt>(); }
+        }
+
+        public static async Task<bool> ValidateAsync(string fileName)
+        {
+            string data;
+            StreamReader streamReader;
+            using (streamReader = new StreamReader(fileName))
+            {
+                data = streamReader.ReadToEnd();
+            }
+            var stream = new MemoryStream(Encoding.UTF8.GetBytes(data));
+
+            return await ValidateAsync(stream);
+        }
+
+        public static async Task<bool> ValidateAsync(Stream stream)
+        {
+            stream.Seek(0, SeekOrigin.Begin);
+            using StreamReader sr = new StreamReader(stream);
+
+            string? lines = await sr.ReadToEndAsync();
+            string trnLines = lines.Replace("\r\n", "\n");
+
+            var statementLines = trnLines.Split(":20:", StringSplitOptions.RemoveEmptyEntries);
+            foreach (var line in statementLines)
+            {
+                if (line.Contains(":62M:") || line.Contains(":62F:") || line.Contains(":62m:"))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

@@ -8,12 +8,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 	<Company>Extreme Solutions</Company>
-	<Version>1.2.2505</Version>
+	<Version>1.2.2506</Version>
 	<Product>MT940 Parser</Product>
 	<Copyright>Copyright - Extreme Solutions - 2025 - All rights reserved</Copyright>
 	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-	<AssemblyVersion>1.2.2505.19210</AssemblyVersion>
-	<FileVersion>1.2.2505.19210</FileVersion>
+	<AssemblyVersion>1.2.2506.27003</AssemblyVersion>
+	<FileVersion>1.2.2506.27003</FileVersion>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
