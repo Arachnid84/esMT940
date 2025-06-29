@@ -12,8 +12,8 @@
 	<Product>MT940 Parser</Product>
 	<Copyright>Copyright - Extreme Solutions - 2025 - All rights reserved</Copyright>
 	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-	<AssemblyVersion>1.2.2506.27004</AssemblyVersion>
-	<FileVersion>1.2.2506.27004</FileVersion>
+	<AssemblyVersion>1.2.2506.27006</AssemblyVersion>
+	<FileVersion>1.2.2506.27006</FileVersion>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 

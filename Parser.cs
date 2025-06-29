@@ -30,7 +30,7 @@ namespace esMT940
         public static async Task<ICollection<Stmt>> ParseAsync(Stream stream)
         {
             stream.Seek(0, SeekOrigin.Begin);
-            using StreamReader sr = new StreamReader(stream);
+            using StreamReader sr = new StreamReader(stream, leaveOpen: true);
             
             List<Stmt> stmt = new List<Stmt>();
 
@@ -193,7 +193,7 @@ namespace esMT940
         public static async Task<bool> ValidateAsync(Stream stream)
         {
             stream.Seek(0, SeekOrigin.Begin);
-            using StreamReader sr = new StreamReader(stream);
+            using StreamReader sr = new StreamReader(stream, leaveOpen: true);
 
             string? lines = await sr.ReadToEndAsync();
             string trnLines = lines.Replace("\r\n", "\n");
